@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+
+<html lang="vi"><head><meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Training Summary — YouTube Market Research | Locked Jazz</title>
+<style>
+    :root {
+      --bg: #f3efe4;
+      --paper: #fffaf0;
+      --paper-2: #f8f2e6;
+      --ink: #12110f;
+      --muted: #686158;
+      --line: rgba(18, 17, 15, .18);
+      --line-strong: rgba(18, 17, 15, .58);
+      --accent: #ff542e;
+      --yellow: #eafd55;
+      --blue: #4e72ff;
+      --green: #92f3a3;
+      --pink: #ffb8d1;
+      --cream: #fff4c8;
+      --lavender: #dcd7ff;
+      --sky: #bfe8ff;
+      --orange-soft: #ffd4bf;
+      --radius-lg: 28px;
+      --radius: 18px;
+      --shadow: 8px 8px 0 var(--ink);
+      --container: 1120px;
+      --gap: clamp(16px, 2vw, 24px);
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      --mono: "IBM Plex Mono", "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      --scroll: 0;
+      --mx: 50vw;
+      --my: 50vh;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--ink);
+      font-family: var(--sans);
+      line-height: 1.55;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(255, 84, 46, .16), transparent 28%),
+        radial-gradient(circle at 92% 20%, rgba(78, 114, 255, .13), transparent 25%),
+        linear-gradient(90deg, rgba(18,17,15,.045) 1px, transparent 1px),
+        linear-gradient(0deg, rgba(18,17,15,.04) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, auto, 38px 38px, 38px 38px, auto;
+      background-position:
+        calc(10% + var(--scroll, 0) * 24px) calc(10% + var(--scroll, 0) * -18px),
+        calc(92% + var(--scroll, 0) * -28px) calc(20% + var(--scroll, 0) * 22px),
+        0 calc(var(--scroll-px, 0px) * -0.035),
+        calc(var(--scroll-px, 0px) * 0.025) 0,
+        0 0;
+    }
+
+    ::selection { background: var(--ink); color: var(--bg); }
+    a { color: inherit; text-decoration: none; }
+    h1, h2, h3, p, div, span { overflow-wrap: anywhere; }
+    button { font: inherit; }
+
+    .progress {
+      position: fixed;
+      inset: 0 0 auto 0;
+      height: 4px;
+      z-index: 100;
+      background: rgba(18, 17, 15, .08);
+      pointer-events: none;
+    }
+    .progress span {
+      display: block;
+      width: calc(var(--scroll) * 100%);
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), var(--yellow), var(--blue));
+    }
+
+    .cursor-glow {
+      position: fixed;
+      left: var(--mx);
+      top: var(--my);
+      z-index: 1;
+      width: 270px;
+      height: 270px;
+      border-radius: 999px;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(255, 84, 46, .16), rgba(234,253,85,.08) 42%, transparent 70%);
+      filter: blur(10px);
+      mix-blend-mode: multiply;
+    }
+
+    .noise, .orbs {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+    }
+    .noise {
+      z-index: 60;
+      opacity: .18;
+      background: repeating-linear-gradient(0deg, rgba(18,17,15,.035), rgba(18,17,15,.035) 1px, transparent 1px, transparent 5px);
+      mix-blend-mode: multiply;
+    }
+    .orbs { z-index: 0; overflow: hidden; }
+    .orb {
+      position: absolute;
+      border: 1px solid rgba(18, 17, 15, .13);
+      border-radius: 999px;
+      opacity: .42;
+      transform: translate3d(0, calc(var(--scroll) * var(--move)), 0) rotate(calc(var(--scroll) * 80deg));
+    }
+    .orb.one { width: 280px; height: 280px; left: -95px; top: 18vh; --move: -230px; background: radial-gradient(circle at 30% 25%, rgba(234,253,85,.22), transparent 62%); }
+    .orb.two { width: 430px; height: 430px; right: -160px; top: 48vh; --move: 320px; background: radial-gradient(circle at 40% 38%, rgba(78,114,255,.15), transparent 64%); }
+    .orb.three { width: 210px; height: 210px; left: 72vw; top: 8vh; --move: -170px; background: radial-gradient(circle at 50% 50%, rgba(255,84,46,.14), transparent 66%); }
+
+    .site-header, .marquee, main, footer, .floating-actions { position: relative; z-index: 2; }
+    .container { width: min(var(--container), calc(100% - 32px)); margin: 0 auto; }
+
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 80;
+      border-bottom: 1px solid var(--line);
+      background: rgba(243, 239, 228, .88);
+      backdrop-filter: blur(16px);
+    }
+    .topbar {
+      width: min(1240px, calc(100% - 28px));
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 16px;
+      align-items: center;
+      padding: 12px 0;
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .brand { font-weight: 900; white-space: nowrap; }
+    .status { justify-self: center; color: var(--muted); text-align: center; }
+    .nav { justify-self: end; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+    .nav a {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      white-space: nowrap;
+      transition: .2s ease;
+    }
+    .nav a:hover, .nav a.is-active { background: var(--ink); color: var(--bg); box-shadow: 3px 3px 0 var(--accent); }
+
+    .marquee {
+      overflow: hidden;
+      border-bottom: 1px solid var(--line);
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: clamp(12px, 1.25vw, 15px);
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      white-space: nowrap;
+    }
+    .marquee span {
+      display: inline-block;
+      min-width: 200%;
+      padding: 10px 0;
+      animation: marqueeMove 28s linear infinite;
+    }
+    @keyframes marqueeMove { to { transform: translateX(-50%); } }
+
+    section { scroll-margin-top: 96px; }
+    .hero {
+      min-height: calc(100vh - 92px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, .92fr);
+      gap: clamp(24px, 4vw, 54px);
+      align-items: center;
+      padding: clamp(48px, 7vw, 88px) 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .dot, .mini-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 6px rgba(255,84,46,.13);
+      flex: 0 0 auto;
+    }
+    h1 {
+      margin: 0;
+      max-width: 860px;
+      font-family: var(--mono);
+      font-size: clamp(54px, 9vw, 118px);
+      line-height: .9;
+      letter-spacing: -.08em;
+      text-transform: uppercase;
+      text-shadow: calc(var(--scroll) * -8px) calc(var(--scroll) * 6px) 0 rgba(255,84,46,.12);
+    }
+    .hero-copy {
+      margin: 24px 0 0;
+      max-width: 740px;
+      color: #312f29;
+      font-size: clamp(18px, 2vw, 25px);
+      line-height: 1.28;
+    }
+
+    .panel {
+      border: 1px solid var(--ink);
+      border-radius: var(--radius-lg);
+      background: rgba(255, 250, 240, .78);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .signal-card { padding: clamp(18px, 2.3vw, 24px); }
+    .signal-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .dial-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .dial {
+      min-height: 128px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--paper-2);
+    }
+    .dial small { color: var(--muted); font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+    .dial strong { display: block; font-family: var(--mono); font-size: clamp(28px, 3.8vw, 38px); line-height: .95; letter-spacing: -.055em; text-transform: uppercase; }
+    .bar { height: 9px; margin-top: 14px; border: 1px solid var(--ink); border-radius: 999px; overflow: hidden; }
+    .bar i { display: block; width: 0; height: 100%; background: var(--ink); transition: width 1s cubic-bezier(.2,.8,.2,1) .2s; }
+    .dial.is-visible:nth-child(1) .bar i { width: 92%; }
+    .dial.is-visible:nth-child(2) .bar i { width: 86%; }
+    .dial.is-visible:nth-child(3) .bar i { width: 78%; }
+    .dial.is-visible:nth-child(4) .bar i { width: 84%; }
+
+    .section-block { padding: clamp(56px, 7vw, 88px) 0; border-bottom: 1px solid var(--line); }
+    .section-title {
+      display: grid;
+      grid-template-columns: 160px minmax(0, 1fr);
+      gap: clamp(16px, 3vw, 32px);
+      align-items: start;
+      margin-bottom: clamp(22px, 4vw, 38px);
+    }
+    .num {
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 13px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding-top: 8px;
+    }
+    h2 {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: clamp(38px, 6.2vw, 78px);
+      line-height: .92;
+      letter-spacing: -.07em;
+      text-transform: uppercase;
+      max-width: 930px;
+      background: linear-gradient(90deg, var(--ink), var(--ink), rgba(255,84,46,.98));
+      background-size: 220% 100%;
+      -webkit-background-clip: text;
+      background-clip: text;
+    }
+    h2.is-visible { animation: textScan 1.2s ease both; }
+    @keyframes textScan { from { background-position: 100% 50%; } to { background-position: 0% 50%; } }
+
+    .intro-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius-lg);
+      background: rgba(255,250,240,.7);
+      overflow: hidden;
+    }
+    .info-box {
+      min-height: 170px;
+      padding: clamp(20px, 2.6vw, 28px);
+      border-right: 1px solid var(--line);
+    }
+    .info-box:last-child { border-right: 0; }
+    .label {
+      margin-bottom: 18px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 12px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+    }
+    .info-box .text {
+      max-width: 320px;
+      font-weight: 850;
+      font-size: clamp(22px, 2.5vw, 32px);
+      line-height: 1.08;
+      letter-spacing: -.04em;
+    }
+
+    .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: var(--gap); }
+    .card, .metric, .takeaway, .question, .swot, .row, .info-box, .dial {
+      position: relative;
+      overflow: hidden;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .card::before, .metric::before, .takeaway::before, .question::before, .swot::before, .row::before, .info-box::before, .dial::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      z-index: 0;
+      pointer-events: none;
+      transform: translateX(-120%);
+      transition: transform .72s ease;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.48) 45%, transparent 60%);
+    }
+    .card:hover::before, .metric:hover::before, .takeaway:hover::before, .question:hover::before, .swot:hover::before, .row:hover::before, .info-box:hover::before, .dial:hover::before { transform: translateX(120%); }
+    .card > *, .metric > *, .takeaway > *, .question > *, .swot > *, .row > *, .info-box > *, .dial > * { position: relative; z-index: 1; }
+
+    .card {
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 18px;
+      border: 1px solid var(--line-strong);
+      border-radius: 22px;
+      background: rgba(255,250,240,.72);
+    }
+    .card:hover, .metric:hover, .takeaway:hover, .question:hover, .row:hover { transform: translateY(-4px); box-shadow: 6px 6px 0 var(--ink); background: var(--paper); }
+    .tag {
+      width: fit-content;
+      padding: 6px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .card h3, .metric h3, .swot h3 {
+      margin: 22px 0 10px;
+      font-family: var(--mono);
+      font-size: 22px;
+      line-height: 1;
+      letter-spacing: -.04em;
+      text-transform: uppercase;
+    }
+    .card p, .metric p, .takeaway p, .swot p { margin: 0; color: #34312b; }
+
+    .keyword-board {
+      display: grid;
+      grid-template-columns: minmax(280px, .9fr) minmax(0, 1.25fr);
+      gap: var(--gap);
+      align-items: stretch;
+    }
+    .big-label {
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(22px, 3vw, 30px);
+      border: 1px solid var(--ink);
+      border-radius: var(--radius-lg);
+      background: var(--ink);
+      color: var(--bg);
+      overflow: hidden;
+    }
+    .big-label .eyebrow { color: rgba(243,239,228,.76); }
+    .code-big {
+      font-family: var(--mono);
+      font-size: clamp(56px, 7.2vw, 96px);
+      line-height: .86;
+      letter-spacing: -.09em;
+      text-transform: uppercase;
+    }
+    .big-label p { margin: 22px 0 0; color: rgba(243,239,228,.78); font-size: 18px; line-height: 1.5; }
+    .table-like {
+      overflow: hidden;
+      border: 1px solid var(--ink);
+      border-radius: var(--radius-lg);
+      background: rgba(255,250,240,.62);
+    }
+    .row { display: grid; grid-template-columns: minmax(150px, 190px) minmax(0, 1fr); min-height: 74px; border-bottom: 1px solid var(--line); }
+    .row:last-child { border-bottom: 0; }
+    .row .name {
+      padding: 18px;
+      border-right: 1px solid var(--line);
+      background: rgba(255,255,255,.30);
+      font-family: var(--mono);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -.025em;
+      display: flex;
+      align-items: center;
+    }
+    .row .desc { padding: 18px; color: #302e29; display: flex; align-items: center; }
+
+    .competitor-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--gap); }
+    .metric {
+      min-height: 182px;
+      padding: 18px;
+      border: 1px solid var(--ink);
+      border-radius: 22px;
+      background: var(--paper-2);
+    }
+    .metric::after {
+      content: "";
+      position: absolute;
+      right: -30px;
+      bottom: -30px;
+      width: 92px;
+      height: 92px;
+      border: 1px solid rgba(18,17,15,.13);
+      border-radius: 999px;
+    }
+    .mnum { margin-bottom: 26px; color: var(--muted); font-family: var(--mono); font-size: 13px; letter-spacing: .08em; }
+
+    .swot-wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--gap); }
+    .swot {
+      min-height: 280px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: clamp(18px, 2.2vw, 24px);
+      border: 1px solid var(--ink);
+      border-radius: 24px;
+      background: var(--paper-2);
+    }
+    .swot:hover { transform: translateY(-5px); box-shadow: 7px 7px 0 var(--ink); }
+    .swot .letter { font-family: var(--mono); font-size: clamp(72px, 7vw, 100px); line-height: .75; letter-spacing: -.12em; }
+    .swot:nth-child(1) { background: var(--yellow); }
+    .swot:nth-child(2) { background: #ffd9cc; }
+    .swot:nth-child(3) { background: #dfe6ff; }
+    .swot:nth-child(4) { background: var(--ink); color: var(--bg); }
+    .swot:nth-child(4) p { color: rgba(243,239,228,.82); }
+    .closing {
+      margin-top: var(--gap);
+      padding: clamp(20px, 2.5vw, 28px);
+      border: 1px solid var(--ink);
+      border-radius: 24px;
+      background: var(--yellow);
+      font-weight: 850;
+      font-size: clamp(20px, 2.3vw, 30px);
+      line-height: 1.18;
+      letter-spacing: -.035em;
+    }
+
+    .question-list { display: grid; gap: 14px; }
+    .question {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      align-items: stretch;
+      min-height: 104px;
+      border: 1px solid var(--ink);
+      border-radius: 24px;
+      background: rgba(255,250,240,.76);
+    }
+    .qno {
+      display: grid;
+      place-items: center;
+      border-right: 1px solid var(--line);
+      background: var(--ink);
+      color: var(--bg);
+      font-family: var(--mono);
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -.08em;
+    }
+    .question p {
+      margin: 0;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      font-weight: 760;
+      font-size: clamp(18px, 1.85vw, 23px);
+      line-height: 1.25;
+      letter-spacing: -.02em;
+    }
+
+    .summary-panel { display: grid; grid-template-columns: minmax(280px, .85fr) minmax(0, 1.15fr); gap: var(--gap); align-items: stretch; }
+    .summary-stamp {
+      position: relative;
+      min-height: 380px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      padding: clamp(22px, 3vw, 30px);
+      border: 1px solid var(--ink);
+      border-radius: var(--radius-lg);
+      background: var(--ink);
+      color: var(--bg);
+    }
+    .summary-stamp::before {
+      content: "YOUTUBE\A MARKET\A RESEARCH";
+      white-space: pre;
+      position: absolute;
+      right: -18px;
+      top: 28px;
+      font-family: var(--mono);
+      font-weight: 900;
+      font-size: clamp(48px, 5.8vw, 72px);
+      line-height: .85;
+      letter-spacing: -.09em;
+      opacity: .08;
+    }
+    .summary-stamp strong, .summary-stamp span { position: relative; z-index: 1; }
+    .summary-stamp strong { font-family: var(--mono); font-size: clamp(44px, 6vw, 76px); line-height: .88; letter-spacing: -.09em; text-transform: uppercase; }
+    .summary-stamp span { color: rgba(243,239,228,.72); font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+    .takeaways { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap); }
+    .takeaway { min-height: 150px; padding: 20px; border: 1px solid var(--line-strong); border-radius: 22px; background: var(--paper-2); }
+    .takeaway b { display: block; margin-bottom: 10px; font-family: var(--mono); font-size: 20px; line-height: 1; letter-spacing: -.035em; text-transform: uppercase; }
+    .final-note { grid-column: 1 / -1; background: var(--yellow); border-color: var(--ink); font-weight: 780; }
+
+    footer { padding: 30px 0 130px; color: var(--muted); font-family: var(--mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+
+    .floating-actions {
+      position: fixed;
+      right: clamp(12px, 2vw, 24px);
+      bottom: clamp(12px, 2vw, 24px);
+      z-index: 90;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: flex-end;
+      pointer-events: none;
+    }
+    .action-row { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; pointer-events: auto; }
+    .action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 42px;
+      padding: 10px 14px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: rgba(255,250,240,.88);
+      color: var(--ink);
+      box-shadow: 4px 4px 0 var(--ink);
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      backdrop-filter: blur(14px);
+      transition: transform .18s ease, background .18s ease, color .18s ease;
+      user-select: none;
+    }
+    .action-btn:hover { transform: translateY(-3px); background: var(--ink); color: var(--bg); }
+    .action-btn.primary { background: var(--accent); color: var(--ink); }
+    .action-btn.is-playing .mini-dot, .mini-dot.on { background: var(--green); box-shadow: 0 0 0 6px rgba(146,243,163,.16); }
+    .edit-note {
+      max-width: min(500px, calc(100vw - 24px));
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255,250,240,.92);
+      color: var(--muted);
+      box-shadow: 0 14px 36px rgba(18,17,15,.14);
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      pointer-events: auto;
+    }
+
+    [data-editable] { min-height: 1em; }
+    body.edit-mode [data-editable] {
+      position: relative;
+      z-index: 5;
+      outline: 1px dashed rgba(255,84,46,.55);
+      outline-offset: 4px;
+      border-radius: 6px;
+      cursor: text;
+    }
+    body.edit-mode [data-editable]:hover { background: rgba(255,84,46,.08); }
+    body.edit-mode [data-editable]:focus {
+      outline: 2px solid var(--accent);
+      background: rgba(255,255,255,.58);
+      box-shadow: 0 0 0 8px rgba(255,84,46,.10);
+    }
+    body.edit-mode .big-label [data-editable]:focus,
+    body.edit-mode .summary-stamp [data-editable]:focus { background: rgba(255,255,255,.12); color: var(--bg); }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px) scale(.988);
+      filter: blur(7px);
+      transition: opacity .75s cubic-bezier(.2,.8,.2,1), transform .75s cubic-bezier(.2,.8,.2,1), filter .75s cubic-bezier(.2,.8,.2,1);
+      transition-delay: var(--delay, 0ms);
+      will-change: opacity, transform, filter;
+    }
+    .reveal.is-visible { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    .parallax-soft { transform: translate3d(0, calc(var(--local-parallax, 0) * -1px), 0); }
+
+
+
+    /* Highlighted headings + clearer readable blocks */
+    .section-title {
+      position: relative;
+      isolation: isolate;
+      padding: clamp(16px, 2.2vw, 24px);
+      border: 1px solid var(--ink);
+      border-radius: var(--radius-lg);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,.55), rgba(255,250,240,.72)),
+        var(--paper);
+      box-shadow: 7px 7px 0 rgba(18,17,15,.95);
+      overflow: hidden;
+    }
+    .section-title::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 14px;
+      background: linear-gradient(180deg, var(--accent), var(--yellow), var(--blue));
+      z-index: -1;
+    }
+    .section-title::after {
+      content: "";
+      position: absolute;
+      right: -120px;
+      top: -120px;
+      width: 260px;
+      height: 260px;
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(255,84,46,.18), transparent 67%);
+      transform: translate3d(0, calc(var(--title-float, 0) * 1px), 0);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .num {
+      width: fit-content;
+      padding: 9px 12px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--bg);
+      box-shadow: 3px 3px 0 var(--accent);
+      font-weight: 900;
+      line-height: 1;
+    }
+    .section-title h2 {
+      color: var(--ink);
+      -webkit-text-fill-color: initial;
+      background: none;
+      text-wrap: balance;
+      letter-spacing: -.052em;
+      text-shadow: 2px 2px 0 rgba(234,253,85,.55);
+    }
+    .section-title h2::after {
+      content: "";
+      display: block;
+      width: min(260px, 48%);
+      height: 10px;
+      margin-top: 14px;
+      border: 1px solid var(--ink);
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--yellow), var(--accent), var(--blue));
+      box-shadow: 3px 3px 0 var(--ink);
+    }
+    #info .section-title::before, #info .section-title h2::after { background: linear-gradient(180deg, var(--yellow), var(--orange-soft)); }
+    #learned .section-title::before, #learned .section-title h2::after { background: linear-gradient(180deg, var(--green), var(--yellow)); }
+    #keywords .section-title::before, #keywords .section-title h2::after { background: linear-gradient(180deg, var(--blue), var(--sky)); }
+    #competitors .section-title::before, #competitors .section-title h2::after { background: linear-gradient(180deg, var(--accent), var(--pink)); }
+    #swot .section-title::before, #swot .section-title h2::after { background: linear-gradient(180deg, var(--yellow), var(--blue)); }
+    #questions .section-title::before, #questions .section-title h2::after { background: linear-gradient(180deg, var(--pink), var(--accent)); }
+    #summary .section-title::before, #summary .section-title h2::after { background: linear-gradient(180deg, var(--ink), var(--green)); }
+
+    .label, .tag, .mnum, .row .name, .takeaway b, .signal-head span, .eyebrow span:last-child {
+      color: var(--ink);
+      font-weight: 950;
+    }
+    .label, .tag, .mnum {
+      width: fit-content;
+      padding: 7px 10px;
+      border: 1px solid rgba(18,17,15,.45);
+      border-radius: 999px;
+      background: var(--yellow);
+      box-shadow: 2px 2px 0 rgba(18,17,15,.9);
+    }
+    .card h3, .metric h3, .swot h3, .takeaway b {
+      display: inline;
+      padding: 0 .12em .05em;
+      background: linear-gradient(transparent 54%, rgba(234,253,85,.92) 0);
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+      text-wrap: balance;
+    }
+    .metric:nth-child(2n) h3 { background: linear-gradient(transparent 54%, rgba(191,232,255,.95) 0); }
+    .metric:nth-child(3n) h3 { background: linear-gradient(transparent 54%, rgba(255,184,209,.82) 0); }
+    .card:nth-child(2n) h3 { background: linear-gradient(transparent 54%, rgba(146,243,163,.88) 0); }
+    .card:nth-child(3n) h3 { background: linear-gradient(transparent 54%, rgba(191,232,255,.95) 0); }
+    .takeaway b { display: inline-block; margin-bottom: 12px; }
+    .row .name {
+      background:
+        linear-gradient(90deg, rgba(234,253,85,.52), rgba(255,255,255,.38));
+      font-size: 14px;
+    }
+    .row:nth-child(2n) .name { background: linear-gradient(90deg, rgba(191,232,255,.62), rgba(255,255,255,.38)); }
+    .row:nth-child(3n) .name { background: linear-gradient(90deg, rgba(255,184,209,.58), rgba(255,255,255,.38)); }
+    .question p, .card p, .metric p, .takeaway p, .swot p, .row .desc, .big-label p, .hero-copy {
+      color: #24211d;
+    }
+    .big-label p, .summary-stamp span { color: rgba(255,250,240,.86); }
+    .question p { font-weight: 850; }
+    .info-box .text { text-wrap: balance; }
+
+    /* Extra parallax atmosphere */
+    .parallax-scene {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .float-shape {
+      position: absolute;
+      display: block;
+      border: 1px solid rgba(18,17,15,.18);
+      box-shadow: 8px 8px 0 rgba(18,17,15,.08);
+      transform: translate3d(0, calc(var(--scroll-px, 0px) * var(--speed)), 0) rotate(calc(var(--scroll, 0) * var(--rot)));
+      will-change: transform;
+    }
+    .float-shape.sun {
+      width: 180px;
+      height: 180px;
+      right: 8vw;
+      top: 15vh;
+      border-radius: 999px;
+      --speed: -0.16;
+      --rot: 90deg;
+      background: radial-gradient(circle at 35% 35%, #fff8be, var(--yellow) 50%, #ffd4bf 100%);
+    }
+    .float-shape.paper-a {
+      width: 220px;
+      height: 84px;
+      left: 4vw;
+      top: 58vh;
+      border-radius: 22px;
+      --speed: 0.12;
+      --rot: -50deg;
+      background: rgba(191,232,255,.42);
+    }
+    .float-shape.paper-b {
+      width: 150px;
+      height: 150px;
+      right: 12vw;
+      top: 78vh;
+      border-radius: 28px;
+      --speed: -0.09;
+      --rot: 70deg;
+      background: rgba(255,184,209,.34);
+    }
+    .float-shape.line-a {
+      width: 360px;
+      height: 16px;
+      left: 58vw;
+      top: 34vh;
+      border-radius: 999px;
+      --speed: 0.19;
+      --rot: 35deg;
+      background: linear-gradient(90deg, var(--accent), var(--yellow));
+    }
+    .float-shape.line-b {
+      width: 290px;
+      height: 12px;
+      left: 12vw;
+      top: 18vh;
+      border-radius: 999px;
+      --speed: -0.21;
+      --rot: -25deg;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+    }
+    .section-block { position: relative; isolation: isolate; }
+    .section-block::after {
+      content: "";
+      position: absolute;
+      right: clamp(12px, 3vw, 40px);
+      top: 22%;
+      width: clamp(58px, 8vw, 120px);
+      height: clamp(58px, 8vw, 120px);
+      border: 1px solid rgba(18,17,15,.12);
+      border-radius: 999px;
+      background: radial-gradient(circle, rgba(234,253,85,.18), transparent 68%);
+      transform: translate3d(0, calc(var(--section-shift, 0) * 1px), 0);
+      pointer-events: none;
+      z-index: -1;
+    }
+    .card, .metric, .question, .swot, .takeaway, .row, .info-box, .dial {
+      box-shadow: 0 10px 28px rgba(18,17,15,.06);
+    }
+    .card:hover, .metric:hover, .takeaway:hover, .question:hover, .row:hover {
+      transform: translateY(calc(-5px + var(--hover-float, 0px)));
+    }
+    .card:focus-within, .metric:focus-within, .question:focus-within, .swot:focus-within, .takeaway:focus-within, .row:focus-within, .info-box:focus-within {
+      outline: 3px solid rgba(255,84,46,.35);
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 1120px) {
+      .cards { grid-template-columns: repeat(3, 1fr); }
+      .swot-wrap { grid-template-columns: repeat(2, 1fr); }
+      .topbar { grid-template-columns: 1fr; gap: 10px; }
+      .status, .nav { justify-self: start; }
+      .nav { justify-content: flex-start; }
+    }
+
+    @media (max-width: 920px) {
+      .hero, .keyword-board, .summary-panel { grid-template-columns: 1fr; }
+      .hero { min-height: auto; align-items: start; }
+      .intro-grid { grid-template-columns: 1fr; }
+      .info-box { border-right: 0; border-bottom: 1px solid var(--line); }
+      .info-box:last-child { border-bottom: 0; }
+      .section-title { grid-template-columns: 1fr; gap: 8px; }
+      .num { padding-top: 0; }
+      .cards, .competitor-grid, .takeaways { grid-template-columns: repeat(2, 1fr); }
+      .big-label { min-height: 340px; }
+      .panel { box-shadow: 6px 6px 0 var(--ink); }
+      .section-title { box-shadow: 5px 5px 0 var(--ink); }
+    }
+
+    @media (max-width: 620px) {
+      .container { width: min(100% - 24px, var(--container)); }
+      .topbar { width: min(100% - 24px, 1240px); }
+      .brand, .status { white-space: normal; }
+      .nav { gap: 6px; }
+      .nav a { padding: 6px 8px; font-size: 11px; }
+      .marquee span { animation-duration: 34s; }
+      h1 { font-size: clamp(44px, 16vw, 72px); letter-spacing: -.075em; }
+      h2 { font-size: clamp(34px, 12vw, 52px); letter-spacing: -.066em; }
+      .hero-copy { font-size: 18px; }
+      .dial-grid, .cards, .competitor-grid, .swot-wrap, .takeaways { grid-template-columns: 1fr; }
+      .card, .metric, .swot, .takeaway { min-height: auto; }
+      .row { grid-template-columns: 1fr; }
+      .row .name { border-right: 0; border-bottom: 1px solid var(--line); }
+      .question { grid-template-columns: 68px minmax(0, 1fr); min-height: 96px; }
+      .qno { font-size: 26px; }
+      .question p { padding: 16px; }
+      .floating-actions { left: 10px; right: 10px; bottom: 10px; align-items: stretch; }
+      .action-row { justify-content: center; }
+      .action-btn { flex: 1 1 auto; padding-inline: 10px; }
+      .edit-note { max-width: none; text-align: center; }
+      .section-title { padding: 16px; }
+      .section-title::before { width: 9px; }
+      .section-title h2::after { width: 72%; height: 8px; }
+      .float-shape.sun { width: 120px; height: 120px; right: -42px; }
+      .float-shape.paper-a, .float-shape.paper-b, .float-shape.line-a, .float-shape.line-b { opacity: .5; }
+      footer { padding-bottom: 210px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .marquee span, h2.is-visible { animation: none !important; }
+      .reveal, .bar i, .card, .metric, .swot, .question, .takeaway, .info-box, .row, .action-btn, .dial { transition: none !important; }
+      .reveal { opacity: 1; transform: none; filter: none; }
+      .cursor-glow, .orbs, .parallax-scene { display: none; }
+    }
+
+    @media print {
+      .site-header, .marquee, .progress, .cursor-glow, .orbs, .parallax-scene, .noise, .floating-actions { display: none !important; }
+      body { background: #fff; }
+      .section-block, .hero { break-inside: avoid; }
+      .reveal { opacity: 1; transform: none; filter: none; }
+      footer { padding-bottom: 24px; }
+    }
+  
+
+    /* Locked presentation mode: only the music control remains visible. */
+    [data-editable] { min-height: initial; }
+    .floating-actions { pointer-events: none; }
+    .floating-actions .action-row { pointer-events: auto; }
+    #musicControl { background: var(--ink); color: var(--bg); box-shadow: 5px 5px 0 var(--accent); }
+    #musicControl:hover { background: var(--accent); color: var(--ink); box-shadow: 5px 5px 0 var(--ink); }
+    #musicControl.is-playing { background: var(--green); color: var(--ink); }
+    @media (max-width: 620px) { footer { padding-bottom: 120px; } }
+    </style>
+</head>
+<body>
+<div aria-hidden="true" class="progress"><span></span></div>
+<div aria-hidden="true" class="cursor-glow"></div>
+<div aria-hidden="true" class="orbs"><span class="orb one"></span><span class="orb two"></span><span class="orb three"></span></div>
+<div aria-hidden="true" class="parallax-scene">
+<span class="float-shape sun"></span>
+<span class="float-shape paper-a"></span>
+<span class="float-shape paper-b"></span>
+<span class="float-shape line-a"></span>
+<span class="float-shape line-b"></span>
+</div>
+<div aria-hidden="true" class="noise"></div>
+<header class="site-header">
+<div class="topbar">
+<div class="brand" data-editable="">TRAINING / SUMMARY / Nguyễn Trường giang</div>
+<div class="status" data-editable="">YT-MARKET-RESEARCH </div>
+<nav aria-label="Điều hướng nội dung" class="nav">
+<a class="" href="#overview">Tổng quan</a>
+<a class="is-active" href="#learned">Nội dung</a>
+<a class="" href="#questions">Câu hỏi</a>
+<a class="" href="#summary">Tổng kết</a>
+</nav>
+</div>
+</header>
+<div aria-hidden="true" class="marquee">
+<span data-editable="">YOUTUBE RESEARCH • NICHE SIGNAL • KEYWORD BOARD • COMPETITOR SCAN • SWOT FRAME • TRAINING SUMMARY • YOUTUBE RESEARCH • NICHE SIGNAL • KEYWORD BOARD • COMPETITOR SCAN • SWOT FRAME • TRAINING SUMMARY • </span>
+</div>
+<main class="container editable-surface">
+<section class="hero" id="overview">
+<div class="reveal parallax-soft is-visible" style="--delay: 0ms; --local-parallax: -26.00;">
+<div class="eyebrow"><span aria-hidden="true" class="dot"></span><span data-editable="">Buổi training nội bộ</span></div>
+<h1 data-editable="">Nghiên cứu thị trường YouTube</h1>
+<p class="hero-copy" data-editable="">Bản tổng hợp ngắn gọn về những phần em đã học được: đánh giá ngách, xây bộ keyword, nghiên cứu đối thủ và dùng SWOT để nhìn rõ cơ hội phát triển kênh.</p>
+</div>
+<aside class="panel signal-card reveal parallax-soft is-visible" style="--delay: 55ms; --local-parallax: 26.00;">
+<div class="signal-head">
+<span data-editable="">Signal Status</span>
+<span data-editable="">Received</span>
+</div>
+<div class="dial-grid">
+<div class="dial reveal is-visible" style="--delay: 110ms;"><small data-editable="">Chủ đề</small><strong data-editable="">YT</strong><div class="bar"><i></i></div></div>
+<div class="dial reveal is-visible" style="--delay: 165ms;"><small data-editable="">Trọng tâm</small><strong data-editable="">NGÁCH</strong><div class="bar"><i></i></div></div>
+<div class="dial reveal is-visible" style="--delay: 220ms;"><small data-editable="">Công cụ</small><strong data-editable="">vidIQ</strong><div class="bar"><i></i></div></div>
+<div class="dial reveal is-visible" style="--delay: 275ms;"><small data-editable="">Khung đánh giá</small><strong data-editable="">SWOT</strong><div class="bar"><i></i></div></div>
+</div>
+</aside>
+</section>
+<section class="section-block" id="info" style="--section-shift: -34.61;">
+<div class="section-title reveal is-visible" style="--delay: 330ms; --title-float: 24.00;">
+<div class="num" data-editable="">01 / Thông tin</div>
+<h2 class="is-visible" data-editable="" style="--delay: 385ms;">Thông tin buổi training</h2>
+</div>
+<div class="intro-grid reveal is-visible" style="--delay: 0ms;">
+<div class="info-box"><div class="label" data-editable="">Chủ đề</div><div class="text" data-editable="">Nghiên cứu thị trường trên nền tảng YouTube</div></div>
+<div class="info-box"><div class="label" data-editable="">Hình thức</div><div class="text" data-editable="">Training nội bộ công ty</div></div>
+<div class="info-box"><div class="label" data-editable="">Mục tiêu</div><div class="text" data-editable="">Hiểu cách chọn ngách, nghiên cứu đối thủ và định hướng kênh</div></div>
+</div>
+</section>
+<section class="section-block" id="learned" style="--section-shift: 10.69;">
+<div class="section-title reveal is-visible" style="--delay: 55ms; --title-float: -6.12;">
+<div class="num" data-editable="">02 / Nội dung học được</div>
+<h2 class="is-visible" data-editable="" style="--delay: 110ms;">Nội dung ngách</h2>
+</div>
+<div class="cards">
+<article class="card reveal parallax-item is-visible" style="--delay: 165ms; --hover-float: 0.53px;"><div class="tag" data-editable="">Niche 01</div><div><h3 data-editable="">Tổng quan ngách</h3><p data-editable="">Ngách này nói về chủ đề gì, có nhiều người quan tâm không.</p></div></article>
+<article class="card reveal parallax-item is-visible" style="--delay: 220ms; --hover-float: -0.53px;"><div class="tag" data-editable="">Niche 02</div><div><h3 data-editable="">Tổng quan kênh</h3><p data-editable="">Các kênh trong ngách đang làm nội dung theo hướng nào.</p></div></article>
+<article class="card reveal parallax-item is-visible" style="--delay: 275ms; --hover-float: 0.53px;"><div class="tag" data-editable="">Niche 03</div><div><h3 data-editable="">Tiềm năng</h3><p data-editable="">Ngách có thể làm lâu dài không, có nhiều chủ đề để khai thác không.</p></div></article>
+<article class="card reveal parallax-item is-visible" style="--delay: 330ms; --hover-float: -0.53px;"><div class="tag" data-editable="">Niche 04</div><div><h3 data-editable="">Cạnh tranh</h3><p data-editable="">Có nhiều đối thủ mạnh không, mức độ cạnh tranh cao hay thấp.</p></div></article>
+<article class="card reveal parallax-item is-visible" style="--delay: 385ms; --hover-float: 0.47px;"><div class="tag" data-editable="">Niche 05</div><div><h3 data-editable="">Người xem</h3><p data-editable="">Người xem là ai, họ thích dạng nội dung nào và đang quan tâm điều gì.(comments)</p></div></article>
+</div>
+</section>
+<section class="section-block" id="keywords" style="--section-shift: 9.70;">
+<div class="section-title reveal is-visible" style="--delay: 0ms; --title-float: -20.10;">
+<div class="num" data-editable="">03 / Keyword</div>
+<h2 class="is-visible" data-editable="" style="--delay: 55ms;">Cấu trúc bộ keyword</h2>
+</div>
+<div class="keyword-board">
+<div class="big-label reveal parallax-soft is-visible" style="--delay: 110ms; --local-parallax: 22.62;">
+<div>
+<div class="eyebrow"><span aria-hidden="true" class="dot"></span><span data-editable="">Keyword board</span></div>
+<div class="code-big" data-editable="">Vidiq</div>
+</div>
+<p data-editable=""><br/></p>
+</div>
+<div aria-label="Cấu trúc keyword" class="table-like reveal is-visible" role="table" style="--delay: 165ms;">
+<div class="row" role="row"><div class="name" data-editable="" role="cell">Keyword chính</div><div class="desc" data-editable="" role="cell">Từ khóa chính của ngách hoặc chủ đề video.</div></div>
+<div class="row" role="row"><div class="name" data-editable="" role="cell">Search Volume</div><div class="desc" data-editable="" role="cell">Mức độ người xem tìm kiếm keyword đó nhiều hay ít.</div></div>
+<div class="row" role="row"><div class="name" data-editable="" role="cell">Competition</div><div class="desc" data-editable="" role="cell">Mức độ cạnh tranh của keyword, giúp biết keyword dễ hay khó khai thác.</div></div>
+<div class="row" role="row"><div class="name" data-editable="" role="cell">Keyword Score</div><div class="desc" data-editable="" role="cell">Chỉ số tổng quan để xem keyword có đáng triển khai hay không.</div></div>
+<div class="row" role="row"><div class="name" data-editable="" role="cell">Related Keywords</div><div class="desc" data-editable="" role="cell">Các keyword liên quan để mở rộng thêm chủ đề và ý tưởng video.</div></div>
+<div class="row" role="row"><div class="name" data-editable="" role="cell">Long-tail Keywords</div><div class="desc" data-editable="" role="cell">Keyword dài, cụ thể hơn, thường dễ phát triển thành tiêu đề hoặc nội dung video.</div></div>
+<div class="row" role="row"><div class="name" data-editable="" role="cell">Tag đối thủ</div><div class="desc" data-editable="" role="cell">Thẻ tag tham khảo từ video/kênh đối thủ để hiểu họ đang SEO theo hướng nào.</div></div>
+</div>
+</div>
+</section>
+<section class="section-block" id="competitors" style="--section-shift: -38.00;">
+<div class="section-title reveal is-visible" style="--delay: 220ms; --title-float: 24.00;">
+<div class="num" data-editable="">04 / Competitor scan</div>
+<h2 class="is-visible" data-editable="" style="--delay: 275ms;">Nghiên cứu đối thủ</h2>
+</div>
+<div class="competitor-grid">
+<article class="metric reveal parallax-item is-visible" style="--delay: 330ms; --hover-float: -10.00px;"><div class="mnum" data-editable="">01</div><h3 data-editable="">Tần suất video / tuần</h3><p data-editable="">Đối thủ đăng bao nhiêu video mỗi tuần, có đều không.</p></article>
+<article class="metric reveal parallax-item is-visible" style="--delay: 385ms; --hover-float: 10.00px;"><div class="mnum" data-editable="">02</div><h3 data-editable="">Thời lượng video</h3><p data-editable="">Video thường dài bao nhiêu phút, dạng ngắn hay dài.</p></article>
+<article class="metric reveal parallax-item is-visible" style="--delay: 0ms; --hover-float: -10.00px;"><div class="mnum" data-editable="">03</div><h3 data-editable="">Cấu trúc thumbnail</h3><p data-editable="">Bố cục, hình ảnh, màu sắc và chữ trên thumbnail.</p></article>
+<article class="metric reveal parallax-item is-visible" style="--delay: 55ms; --hover-float: 10.00px;"><div class="mnum" data-editable="">04</div><h3 data-editable="">Cách SEO</h3><p data-editable="">Cách đặt tiêu đề, mô tả, keyword và tag.</p></article>
+<article class="metric reveal parallax-item is-visible" style="--delay: 110ms; --hover-float: -10.00px;"><div class="mnum" data-editable="">05</div><h3 data-editable="">Chủ đề hiệu quả</h3><p data-editable="">Video nào nhiều view, nội dung nào đang được quan tâm.</p></article>
+<article class="metric reveal parallax-item is-visible" style="--delay: 165ms; --hover-float: 10.00px;"><div class="mnum" data-editable="">06</div><h3 data-editable="">Cách xây dựng kênh</h3><p data-editable="">Kênh có định hướng nội dung rõ ràng và duy trì traffic tốt không.</p></article>
+</div>
+</section>
+<section class="section-block" id="swot" style="--section-shift: 38.00;">
+<div class="section-title reveal is-visible" style="--delay: 220ms; --title-float: -24.00;">
+<div class="num" data-editable="">05 / SWOT</div>
+<h2 class="is-visible" data-editable="" style="--delay: 275ms;">Cấu trúc phân tích SWOT</h2>
+</div>
+<div class="swot-wrap">
+<article class="swot reveal parallax-item is-visible" style="--delay: 330ms; --hover-float: -10.00px;"><div class="letter" data-editable="">S</div><div><h3 data-editable="">Strengths</h3><p data-editable="">Điểm mạnh của ngách hoặc kênh.</p></div></article>
+<article class="swot reveal parallax-item is-visible" style="--delay: 385ms; --hover-float: 10.00px;"><div class="letter" data-editable="">W</div><div><h3 data-editable="">Weaknesses</h3><p data-editable="">Điểm yếu cần cải thiện hoặc cần lưu ý.</p></div></article>
+<article class="swot reveal parallax-item is-visible" style="--delay: 0ms; --hover-float: -10.00px;"><div class="letter" data-editable="">O</div><div><h3 data-editable="">Opportunities</h3><p data-editable="">Cơ hội có thể khai thác để phát triển.</p></div></article>
+<article class="swot reveal parallax-item is-visible" style="--delay: 55ms; --hover-float: 10.00px;"><div class="letter" data-editable="">T</div><div><h3 data-editable="">Threats</h3><p data-editable="">Rủi ro hoặc khó khăn có thể gặp phải.</p></div></article>
+</div>
+<div class="closing reveal is-visible" data-editable="" style="--delay: 110ms;">Hiểu đơn giản, SWOT giúp em nhìn rõ hơn: mình có lợi thế gì, còn yếu ở đâu, có cơ hội nào và cần tránh rủi ro gì.</div>
+</section>
+<section class="section-block" id="questions" style="--section-shift: -38.00;">
+<div class="section-title reveal is-visible" style="--delay: 165ms; --title-float: 24.00;">
+<div class="num" data-editable="">06 / Câu hỏi</div>
+<h2 class="is-visible" data-editable="" style="--delay: 220ms;">Những câu hỏi em muốn tìm hiểu thêm</h2>
+</div>
+<div class="question-list">
+<article class="question reveal parallax-item is-visible" style="--delay: 275ms; --hover-float: -10.00px;"><div class="qno" data-editable="">01</div><p data-editable="">Khi chưa có dữ liệu cụ thể, làm sao để đánh giá CPM và RPM của một ngách có tiềm năng hay không?</p></article>
+<article class="question reveal parallax-item is-visible" style="--delay: 330ms; --hover-float: 10.00px;"><div class="qno" data-editable="">02</div><p data-editable="">Làm sao để xây dựng chiến lược nội dung giúp kênh bật kiếm tiền nhanh hơn?</p></article>
+<article class="question reveal parallax-item is-visible" style="--delay: 385ms; --hover-float: -10.00px;"><div class="qno" data-editable="">03</div><p data-editable="">Sau khi bật kiếm tiền, cần làm gì để duy trì traffic ổn định cho kênh?</p></article>
+<article class="question reveal parallax-item is-visible" style="--delay: 0ms; --hover-float: 10.00px;"><div class="qno" data-editable="">04</div><p data-editable="">Khi phân tích thumbnail của đối thủ, cần dựa vào những yếu tố nào để biết vì sao thumbnail đó hiệu quả?</p></article>
+<article class="question reveal parallax-item is-visible" style="--delay: 55ms; --hover-float: -10.00px;"><div class="qno" data-editable="">05</div><p data-editable="">Nếu áp dụng cấu trúc thumbnail từ một ngách khác sang ngách của mình thì có phù hợp và hiệu quả không?</p></article>
+</div>
+</section>
+<section class="section-block" id="summary" style="--section-shift: 38.00;">
+<div class="section-title reveal is-visible" style="--delay: 110ms; --title-float: -24.00;">
+<div class="num" data-editable="">07 / Tổng kết</div>
+<h2 class="is-visible" data-editable="" style="--delay: 165ms;">Tổng kết chung</h2>
+</div>
+<div class="summary-panel">
+<div class="summary-stamp reveal parallax-soft is-visible" style="--delay: 220ms; --local-parallax: -26.00;">
+<strong data-editable="">Kết quả</strong>
+<span data-editable="">Research first • Create better</span>
+</div>
+<div class="takeaways">
+<article class="takeaway reveal parallax-item is-visible" style="--delay: 275ms; --hover-float: 10.00px;"><b data-editable="">Ngách nội dung</b><p data-editable="">Biết cách đánh giá tổng quan một ngách trước khi triển khai.</p></article>
+<article class="takeaway reveal parallax-item is-visible" style="--delay: 330ms; --hover-float: -10.00px;"><b data-editable="">Keyword</b><p data-editable="">Biết cách xem keyword dựa trên các chỉ số trong vidIQ.</p></article>
+<article class="takeaway reveal parallax-item is-visible" style="--delay: 385ms; --hover-float: 10.00px;"><b data-editable="">Đối thủ</b><p data-editable="">Biết cần phân tích tần suất đăng video, thời lượng, thumbnail, SEO và tag.</p></article>
+<article class="takeaway reveal parallax-item is-visible" style="--delay: 0ms; --hover-float: -10.00px;"><b data-editable="">SWOT</b><p data-editable="">Biết cách nhìn điểm mạnh, điểm yếu, cơ hội và rủi ro.</p></article>
+<article class="takeaway final-note reveal parallax-item is-visible" style="--delay: 55ms; --hover-float: 10.00px;"><b data-editable="">Kết luận</b><p data-editable="">Buổi training giúp em có cách nhìn rõ ràng hơn khi chọn ngách và xây dựng kênh YouTube. Thay vì làm theo cảm tính, em có thể dựa vào nghiên cứu để định hướng nội dung tốt hơn.</p></article>
+</div>
+</div>
+</section>
+</main>
+<footer class="container">
+<span data-editable="">Training Summary • Nghiên cứu thị trường YouTube • Nguyễn trường giang</span>
+</footer>
+<div aria-label="Điều khiển âm thanh" class="floating-actions"><div class="action-row"><button class="action-btn primary" id="musicControl" title="Nhạc jazz nhẹ nhàng" type="button"><span class="mini-dot"></span><span class="music-label">Bật nhạc jazz</span></button></div></div>
+<script>
+    (() => {
+      const root = document.documentElement;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const revealEls = [...document.querySelectorAll('.reveal, .dial, h2')];
+      const parallaxEls = [...document.querySelectorAll('.parallax-soft')];
+      const sectionEls = [...document.querySelectorAll('.section-block')];
+      const titleEls = [...document.querySelectorAll('.section-title')];
+      const parallaxItems = [...document.querySelectorAll('.parallax-item')];
+      const navLinks = [...document.querySelectorAll('.nav a')];
+      const anchorSections = navLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+
+      revealEls.forEach((el, index) => {
+        el.style.setProperty('--delay', `${Math.min(index % 8, 7) * 55}ms`);
+        observer.observe(el);
+      });
+
+      function updateScrollEffects() {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+        const progress = Math.min(1, Math.max(0, scrollTop / max));
+        root.style.setProperty('--scroll', progress.toFixed(4));
+        root.style.setProperty('--scroll-px', `${scrollTop}px`);
+
+        parallaxEls.forEach((el, index) => {
+          const rect = el.getBoundingClientRect();
+          const centerDelta = (rect.top + rect.height / 2) - window.innerHeight / 2;
+          const amount = Math.max(-26, Math.min(26, centerDelta * 0.028 * (index % 2 ? -1 : 1)));
+          el.style.setProperty('--local-parallax', amount.toFixed(2));
+        });
+
+        sectionEls.forEach((el, index) => {
+          const rect = el.getBoundingClientRect();
+          const amount = Math.max(-38, Math.min(38, (rect.top - window.innerHeight * 0.45) * 0.035 * (index % 2 ? -1 : 1)));
+          el.style.setProperty('--section-shift', amount.toFixed(2));
+        });
+
+        titleEls.forEach((el, index) => {
+          const rect = el.getBoundingClientRect();
+          const amount = Math.max(-24, Math.min(24, (rect.top - window.innerHeight * 0.33) * 0.045 * (index % 2 ? 1 : -1)));
+          el.style.setProperty('--title-float', amount.toFixed(2));
+        });
+
+        parallaxItems.forEach((el, index) => {
+          const rect = el.getBoundingClientRect();
+          const distance = rect.top + rect.height / 2 - window.innerHeight / 2;
+          const amount = Math.max(-10, Math.min(10, distance * 0.012 * (index % 2 ? -1 : 1)));
+          el.style.setProperty('--hover-float', `${amount.toFixed(2)}px`);
+        });
+
+        let current = null;
+        anchorSections.forEach(section => {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= 150 && rect.bottom >= 150) current = section.id;
+        });
+        navLinks.forEach(link => link.classList.toggle('is-active', link.getAttribute('href') === `#${current}`));
+      }
+
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (!ticking) {
+          requestAnimationFrame(() => { updateScrollEffects(); ticking = false; });
+          ticking = true;
+        }
+      }, { passive: true });
+      updateScrollEffects();
+
+      if (!reduceMotion) {
+        window.addEventListener('pointermove', event => {
+          root.style.setProperty('--mx', `${event.clientX}px`);
+          root.style.setProperty('--my', `${event.clientY}px`);
+        }, { passive: true });
+      }
+    })();
+  </script>
+
+<script>
+    (() => {
+      const button = document.getElementById('musicControl');
+      if (!button) return;
+      const label = button.querySelector('.music-label');
+      let audioCtx = null;
+      let master = null;
+      let timers = [];
+      let activeNodes = [];
+      let isPlaying = false;
+      let step = 0;
+
+      // Nhạc jazz nhẹ nhàng: mô phỏng piano điện, walking bass và brush/ride rất nhẹ bằng Web Audio.
+      const bpm = 82;
+      const beat = 60 / bpm;
+      const swing = 0.58;
+      const progression = [
+        { root: 130.81, chord: [261.63, 329.63, 392.00, 493.88] }, // Cmaj7
+        { root: 110.00, chord: [220.00, 261.63, 329.63, 392.00] }, // Am7
+        { root: 146.83, chord: [293.66, 349.23, 440.00, 523.25] }, // Dm7
+        { root: 98.00,  chord: [196.00, 246.94, 349.23, 493.88] }  // G13 feel
+      ];
+      const melody = [659.25, 587.33, 523.25, 493.88, 523.25, 587.33, 659.25, 783.99, 698.46, 659.25, 587.33, 523.25];
+
+      function makeGain(value = 0.0001) {
+        const gain = audioCtx.createGain();
+        gain.gain.value = value;
+        activeNodes.push(gain);
+        return gain;
+      }
+
+      function connectFilter(type, frequency, q = 0.7) {
+        const filter = audioCtx.createBiquadFilter();
+        filter.type = type;
+        filter.frequency.value = frequency;
+        filter.Q.value = q;
+        activeNodes.push(filter);
+        return filter;
+      }
+
+      function playTone({ freq, time, duration, type = 'triangle', peak = 0.035, attack = 0.02, release = 0.7, destination, detune = 0 }) {
+        const osc = audioCtx.createOscillator();
+        const gain = makeGain(0.0001);
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, time);
+        osc.detune.value = detune;
+        osc.connect(gain);
+        gain.connect(destination);
+        gain.gain.setValueAtTime(0.0001, time);
+        gain.gain.linearRampToValueAtTime(peak, time + attack);
+        gain.gain.exponentialRampToValueAtTime(0.0008, time + Math.max(attack + 0.04, duration - release * 0.22));
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+        osc.start(time);
+        osc.stop(time + duration + 0.08);
+        activeNodes.push(osc);
+      }
+
+      function playNoise({ time, duration = 0.18, peak = 0.018, destination, filterFreq = 5200 }) {
+        const bufferSize = Math.max(1, Math.floor(audioCtx.sampleRate * duration));
+        const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufferSize, 1.7);
+        const source = audioCtx.createBufferSource();
+        source.buffer = buffer;
+        const filter = connectFilter('highpass', filterFreq, 0.7);
+        const gain = makeGain(0.0001);
+        source.connect(filter);
+        filter.connect(gain);
+        gain.connect(destination);
+        gain.gain.setValueAtTime(0.0001, time);
+        gain.gain.linearRampToValueAtTime(peak, time + 0.012);
+        gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+        source.start(time);
+        source.stop(time + duration + 0.03);
+        activeNodes.push(source);
+      }
+
+      function scheduleChord() {
+        const now = audioCtx.currentTime;
+        const chordSet = progression[Math.floor(step / 8) % progression.length];
+        const spread = [0, 0.035, 0.075, 0.115];
+        chordSet.chord.forEach((freq, index) => {
+          playTone({
+            freq,
+            time: now + spread[index],
+            duration: beat * 3.2,
+            type: 'triangle',
+            peak: index === 0 ? 0.025 : 0.019,
+            attack: 0.035,
+            release: 1.2,
+            destination: window.jazzToneBus,
+            detune: (index - 1.5) * 2
+          });
+        });
+      }
+
+      function scheduleBass() {
+        const now = audioCtx.currentTime;
+        const current = progression[Math.floor(step / 8) % progression.length];
+        const next = progression[(Math.floor(step / 8) + 1) % progression.length];
+        const bassLine = [current.root, current.root * 1.25, current.root * 1.5, next.root * 0.95];
+        const note = bassLine[Math.floor(step / 2) % bassLine.length];
+        playTone({ freq: note, time: now, duration: beat * 1.15, type: 'sine', peak: 0.026, attack: 0.025, release: 0.55, destination: window.jazzBassBus });
+      }
+
+      function scheduleMelody() {
+        const now = audioCtx.currentTime;
+        const offset = (step % 2 === 0) ? 0 : beat * (swing - 0.5);
+        const note = melody[step % melody.length];
+        if (step % 3 !== 1) {
+          playTone({ freq: note, time: now + offset, duration: beat * 1.55, type: 'sine', peak: 0.018, attack: 0.018, release: 0.8, destination: window.jazzMelodyBus });
+        }
+      }
+
+      function scheduleBrushes() {
+        const now = audioCtx.currentTime;
+        playNoise({ time: now, duration: beat * 0.38, peak: 0.0065, destination: window.jazzDrumBus, filterFreq: 6500 });
+        if (step % 4 === 2) playNoise({ time: now + beat * 0.15, duration: beat * 0.55, peak: 0.011, destination: window.jazzDrumBus, filterFreq: 4200 });
+      }
+
+      function startMusic() {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        master = makeGain(0.0001);
+        const compressor = audioCtx.createDynamicsCompressor();
+        compressor.threshold.value = -28;
+        compressor.knee.value = 24;
+        compressor.ratio.value = 4;
+        compressor.attack.value = 0.02;
+        compressor.release.value = 0.25;
+        activeNodes.push(compressor);
+
+        const toneFilter = connectFilter('lowpass', 2600, 0.72);
+        const bassFilter = connectFilter('lowpass', 520, 0.85);
+        const melodyFilter = connectFilter('lowpass', 3600, 0.6);
+        const drumFilter = connectFilter('highpass', 1800, 0.8);
+
+        window.jazzToneBus = makeGain(0.72);
+        window.jazzBassBus = makeGain(0.76);
+        window.jazzMelodyBus = makeGain(0.62);
+        window.jazzDrumBus = makeGain(0.48);
+
+        window.jazzToneBus.connect(toneFilter);
+        window.jazzBassBus.connect(bassFilter);
+        window.jazzMelodyBus.connect(melodyFilter);
+        window.jazzDrumBus.connect(drumFilter);
+
+        toneFilter.connect(compressor);
+        bassFilter.connect(compressor);
+        melodyFilter.connect(compressor);
+        drumFilter.connect(compressor);
+        compressor.connect(master);
+        master.connect(audioCtx.destination);
+        master.gain.linearRampToValueAtTime(0.095, audioCtx.currentTime + 1.8);
+
+        step = 0;
+        scheduleChord();
+        scheduleBass();
+        scheduleMelody();
+        scheduleBrushes();
+
+        timers.push(setInterval(() => { scheduleChord(); }, beat * 4 * 1000));
+        timers.push(setInterval(() => { scheduleBass(); scheduleMelody(); scheduleBrushes(); step += 1; }, beat * 1000));
+      }
+
+      function stopMusic() {
+        if (!audioCtx) return;
+        const ctx = audioCtx;
+        if (master) {
+          master.gain.cancelScheduledValues(ctx.currentTime);
+          master.gain.setValueAtTime(Math.max(master.gain.value, 0.0001), ctx.currentTime);
+          master.gain.linearRampToValueAtTime(0.0001, ctx.currentTime + 0.9);
+        }
+        timers.forEach(clearInterval);
+        timers = [];
+        setTimeout(() => {
+          activeNodes.forEach(node => {
+            try { if (node.stop) node.stop(); } catch (error) {}
+            try { if (node.disconnect) node.disconnect(); } catch (error) {}
+          });
+          activeNodes = [];
+          try { ctx.close(); } catch (error) {}
+          audioCtx = null;
+          master = null;
+          delete window.jazzToneBus;
+          delete window.jazzBassBus;
+          delete window.jazzMelodyBus;
+          delete window.jazzDrumBus;
+        }, 950);
+      }
+
+      button.addEventListener('click', async () => {
+        if (!isPlaying) {
+          startMusic();
+          if (audioCtx.state === 'suspended') await audioCtx.resume();
+          isPlaying = true;
+          button.classList.add('is-playing');
+          label.textContent = 'Tắt nhạc jazz';
+        } else {
+          stopMusic();
+          isPlaying = false;
+          button.classList.remove('is-playing');
+          label.textContent = 'Bật nhạc jazz';
+        }
+      });
+    })();
+  </script>
+</body></html>
